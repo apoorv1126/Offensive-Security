@@ -1,0 +1,10 @@
+1. Nmap light scan
+nmap -sSV -v -O --top-ports 20 -oG top20ports.txt 10.11.1.71 | tee top20.txt 
+
+2.All port scan with reason value 
+nmap -sV -v -p- 10.11.1.71 --reason --dns-server 10.11.1.42 | tee allportscan.txt
+
+Summary
+
+Recommend SSH brute force tools: A custom wordlist for the target (using another vulnerability or CeWL/wordhound), Hydra (don't forget about "-e [VALUES]"), Patator (Password fuzzer rather than brute force), 
+Crowbar (great for brute forcing private keys), Metasploit's ssh_login
