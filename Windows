@@ -1,0 +1,52 @@
+Here are the commands for general purpose use in windows :
+
+1. To add a low privelage user
+
+net user <username> <pass> /add
+
+2. To add a lowpriv user to any group
+Eg : Here is "Remote Desktop users" group in which a low priv user is added
+
+net localgroup "Remote Desktop users" bob /add      (where, bob = lowpriv user)
+
+3. To see all groups in the systems
+net localgroup
+
+3. To see the list of users 
+net user
+
+4. To change the password of any user
+net user <user_name> * /domain                    (You need to be administrator to change other user password)
+
+5. To look at the services 
+services.msc                                      (cmd command)
+
+6. To check the permission of any exe,            (Go to exe location)
+icacls program.exe
+
+7. Compile C program to a windows executable in linux environment 
+i686-w64-mingw32-gcc useradd.c -o useradd.exe
+
+8. To get system info 				  (Use at the time of privilage escalation)
+systeminfo
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+
+9. To check the hostname
+hostname
+
+10. To check which user we are connected to
+echo %username%
+
+11. To list the other user account on the box
+net users
+
+12. To list the details of the perticular user account
+net user bob
+
+13. Network related commands
+ipconfig /all 						(To see all the interface present on the systems)
+route print 						(To see the routing table)
+arp -A 							(To see the arp table)
+netstat -ano						(To see all the network connection)
+netsh firewall show state				(To check the firewall rules) (Only available from SP2)
+netsh firewall show config				(To check the firewall config)
