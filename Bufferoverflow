@@ -1,0 +1,33 @@
+Buffer overflow : 
+
+
+1. To create unique number of pattern
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb 2700
+
+2. To find the offset of the string on the EIP
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb 39694438
+
+3. Making the new script with the exect offset to control the EIP
+
+4. Check the content in the stack pointed by ESP register
+
+5. Increase the buffer length to insert our payload 
+
+6. Verify the null bytes
+
+7. To find the opcode of jmp esp
+/usr/share/metasploit-framework/tools/exploit/nasm_shell.rb 
+nasm> jmp esp
+FFE4	jmp esp
+
+8. To find jmp esp in spesific modules (Right click + search for + command)
+!mona modules
+
+9. Search for jmp esp using opcode
+!mona find -s "\xff\xe4" -m slmfc.dll
+
+10. Select the address which doesn't have bad character
+
+11. Pressing F2 to insert the break point on jmp esp
+
+12. Press F7 to continue the execution after the breakpoint
