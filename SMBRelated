@@ -1,0 +1,8 @@
+1. To do smb lookup on smb related client
+nmblookup -A 192.168.0.5
+
+2. For the enumeration of the specific directory
+smbclient -L \\madirish-dt -I 192.168.0.1 -N
+
+3.To connect on a specific service
+smbclient //madirish-dt/share -I 192.168.0.1 -N
