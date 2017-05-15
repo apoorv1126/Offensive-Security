@@ -4,6 +4,54 @@ nmap -sSV -v -O --top-ports 20 -oG top20ports.txt 10.11.1.71 | tee top20.txt
 2.All port scan with reason value 
 nmap -sV -v -p- 10.11.1.71 --reason --dns-server 10.11.1.42 | tee allportscan.txt
 
+
+ip=$1
+echo "Starting nmap syn scan"
+nmap -sSV -T3 -v -oG grep-syn.txt $ip > syn.txt 
+#gnome-terminal -x sh -c "cat syn.txt; bash"
+echo "done with syn scan"
+
+echo "Starting nmap version scan"
+nmap -sV -O -T2 -v -oG grep-ov.txt $ip > ovscan.txt &
+#gnome-terminal -x sh -c "tail -f ovscan.txt; bash"
+echo "done with ov scan"
+
+echo "Starting nikto scan"
+nikto -h $ip > nikto.txt &
+#gnome-terminal -x sh -c "tail -f nikto.txt; bash"
+echo "done with nikto scan"
+
+echo "Starting fulleunm nmap scan version scan"
+nmap -sS --script=*-enum-* $ip -v > fullenumnmap.txt
+#gnome-terminal -x sh -c "cat fullenumnmap.txt; bash"
+
+echo "Starting enum4linux version scan"
+enum4linux -a $ip > enum4linux.txt
+#gnome-terminal -x sh -c "cat enum4linux.txt; bash"
+
+echo "Starting gobuster scan"
+gobuster -u $ip -w /usr/share/wordlists/dirb/common.txt -s '200,204,301,302,307,403,500' -e > gobuster.txt &
+#gnome-terminal -x sh -c "tail -f gobuster.txt; bash"
+echo "done gobuster scan"
+
+echo "Starting gobustercgi scan"
+gobuster -u $ip -w /usr/share/wordlists/dirb/vulns/cgis.txt -s '200,204,403,500' -e > gobust-cgi.txt &
+#gnome-terminal -x sh -c "tail -f gobust-cgi.txt; bash"
+
+echo "Starting onetwopunch scan"
+echo $ip > scanip.txt
+onetwopunch.sh -t scanip.txt -p udp -i tap0 -n -A > onetwopunch.txt &
+#gnome-terminal -x sh -c "tail -f onetwopunch.txt; bash"
+
+echo "Starting smbenum scan"
+nmap -sS --script=smb-enum-* $ip -v > smbenumnmap.txt
+#gnome-terminal -x sh -c "cat nikto.txt; bash"
+
+echo "Starting nmap version scan"
+nmap --script=*-vuln-* $ip -v > fullvulnscan.txt
+#gnome-terminal -x sh -c "cat nikto.txt; bash"
+exit 0
+
 Summary
 
 Recommend SSH brute force tools: A custom wordlist for the target (using another vulnerability or CeWL/wordhound), Hydra (don't forget about "-e [VALUES]"), Patator (Password fuzzer rather than brute force), 
