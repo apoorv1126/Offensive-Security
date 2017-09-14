@@ -18,4 +18,4 @@ Password - raspberry
 Privilage escalation : 
 1. sudo -s   # No sudo ristriction
 2. Recover deleted root.txt file
-Tool used ext
+Recovery information : https://github.com/apoorv1126/Miscellaneous/blob/master/RecoverDeletedFiles-Linux
