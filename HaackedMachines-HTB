@@ -1,0 +1,21 @@
+1. Optimum
+
+5. Miria
+
+Info : Raspberry Pi (Pi-hole Version v3.1.4 Web Interface Version v3.1 FTL Version v2.10)
+SystemInfo : 
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="8"
+VERSION="8 (jessie)"
+ID=debian
+
+Hack : 
+Default Raspberry login and password
+Login - pi
+Password - raspberry
+
+Privilage escalation : 
+1. sudo -s   # No sudo ristriction
+2. Recover deleted root.txt file
+Tool used ext
