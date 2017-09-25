@@ -1,6 +1,6 @@
 1. Optimum
 
-5. Miria
+4. Miria
 
 Info : Raspberry Pi (Pi-hole Version v3.1.4 Web Interface Version v3.1 FTL Version v2.10)
 SystemInfo : 
@@ -19,3 +19,40 @@ Privilage escalation :
 1. sudo -s   # No sudo ristriction
 2. Recover deleted root.txt file
 Recovery information : https://github.com/apoorv1126/Miscellaneous/blob/master/RecoverDeletedFiles-Linux
+
+5. Grandpa
+
+General Info : 
+80/tcp open  http    Microsoft IIS httpd 6.0(WebDAV)
+This service is used to exploit the system
+
+SystemInfo : 
+omputer        : GRANPA
+OS              : Windows .NET Server (Build 3790, Service Pack 2).
+Architecture    : x86
+System Language : en_US
+Domain          : HTB
+Logged On Users : 3
+Meterpreter     : x86/windows
+
+Hack:
+- Exploit used on port 80 -
+exploit/windows/iis/iis_webdav_scstoragepathfromurl
+
+- Payload used - Meterpreter reverse tcp
+
+- Migrate meterpreter shell with other process
+Note : Without process migration, privilage escalation exploit will not work as it does not have enough rights.
+
+Privilage Escalation : 
+
+- To find privilage escalation exploit use exploit suggester
+post/multi/recon/local_exploit_suggester
+
+- To escalate privilage, use the below exploit
+exploit/windows/local/ms14_070_tcpip_ioctl
+
+
+
+
+
