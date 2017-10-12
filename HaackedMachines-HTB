@@ -119,7 +119,13 @@ dcom:$1$xyz$jAlmRpcFe.aiPOIXET9GG/:0:0:root:/root:/bin/bash ## MD5 password hash
 - To creat md5 sum with salt
 openssl passwd -1 -salt xyz any-password
 
-- No just do
+Method 2
+makepasswd --clearfrom=- --crypt-md5 <<< YourPass
+
+Method 3
+echo "username:password" | chpasswd 
+
+- And just do
 su - dcom
 
 
