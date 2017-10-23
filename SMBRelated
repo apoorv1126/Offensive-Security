@@ -1,0 +1,30 @@
+1. To do smb lookup on smb related client
+nmblookup -A 192.168.0.5
+
+2. For the enumeration of the specific directory
+smbclient -L \\madirish-dt -I 192.168.0.1 -N
+
+3.To connect on a specific service
+smbclient //madirish-dt/share -I 192.168.0.1 -N
+
+
+
+1. Gives most of the information of SMB server
+enum4linux 10.11.1.5
+
+2. To see the SMB share
+enum4linux -S 10.11.1.5
+
+smbclient //GIRLFRIEND/c -I 192.168.0.5
+
+smbclient -L 1.2.3.4
+
+3. To connect to SMB share
+smbclient -L \\server -I 192.168.0.1 -N
+
+smbclient \\\\3.4.5.6\\nameofshare
+
+smbclient //server/share -I 192.168.0.1 -N (At this point we can push or pull files using get and put)
+
+4. To get the whole folder use
+smbget -R smb://3.4.5.6/nameofshare/folder

