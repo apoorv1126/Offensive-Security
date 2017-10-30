@@ -1,0 +1,52 @@
+Scan Info : 
+
+PORT     STATE  SERVICE VERSION
+21/tcp   open   ftp     ProFTPD 1.3.5a
+22/tcp   open   ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+80/tcp   open   http    Apache httpd 2.4.18 ((Ubuntu))
+8192/tcp closed sophos
+Device type: general purpose|specialized|WAP|storage-misc|printer
+Running (JUST GUESSING): Linux 3.X|4.X|2.6.X (93%), Crestron 2-Series (89%), HP embedded (89%), Asus embedded (88%)
+OS CPE: cpe:/o:linux:linux_kernel:3.16 cpe:/o:linux:linux_kernel:4 cpe:/o:crestron:2_series cpe:/o:linux:linux_kernel:2.6.22 cpe:/h:hp:p2000_g3 cpe:/o:linux:linux_kernel cpe:/h:asus:rt-ac66u cpe:/o:linux:linux_kernel:3.4
+
+### General Info ##########
+### This machine is made on the concept on Password reuse #####
+
+Hack:
+
+1. dirbuster / gobuter with common.txt wordlist
+http://10.10.10.37/plugins (Status: 301)
+In this page, there are two .jar plugins
+
+2. Using the vi editor, open the BlockyCore.jar file. 
+
+3. In the above file, you find the credentials to login the below page. 
+http://10.10.10.37/phpmyadmin (Status: 301)
+
+4. We can upload the php shell in the wordpress plugin to get the reverse connection.
+### user will be " www-data "
+### With this user, we can not read any flag.
+### Now to move forward, we have two methods :-
+
+Method 1 : 
+
+5. We see the user after the above exploitation
+
+6. Use that user to ssh the machine with the same password which we found in .jar file.
+
+Method 2 : 
+
+7. Use the privilage escalation exploit for linux  :
+Linux Kernel 4.4.x (Ubuntu 16.04) 
+https://www.exploit-db.com/exploits/39772/
+### This will escalate your privilage to root but once it ends it will crash the systems
+
+Privilge Escalation : 
+
+1. Sudo -s 
+### Simple sudo -s will do the job one we are logged on to the system with user access through ssh
+
+
+
+
+
