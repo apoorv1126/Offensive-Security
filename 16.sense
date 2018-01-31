@@ -1,0 +1,32 @@
+
+
+Nmap
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     lighttpd 1.4.35
+443/tcp open  ssl/http lighttpd 1.4.35
+
+System Info : ## Got this info after the hack ## Needed for explitation ####
+
+pfSense
+2.1.3-RELEASE (amd64)
+built on Thu May 01 15:52:13 EDT 2014
+FreeBSD 8.3-RELEASE-p16
+
+Hack : 
+
+- Use dirb or dirbuster 
+  used wordlist : /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt
+  Extension used : txt (File contains userand pass https://10.10.10.60/system-users.txt) && (Default pass : pfsense )
+  #### Without using extension you wont get the correct file i.e. system-users.txt
+  
+- Login to the web pannel 
+- Check the pfsense version and find the exploit online accordingly
+
+- Exploits available (Amd 64 remote command execution)
+  1. https://www.exploit-db.com/exploits/43560/
+  2. https://dl.packetstormsecurity.net/1712-exploits/pfsense_graph_injection_exec.rb.txt
+  
+- Import the ruby exploit in metasploit and use it.
+
+- You will get directly the root sheel thus no need for privilege escalation.
