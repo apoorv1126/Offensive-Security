@@ -1,0 +1,8 @@
+1. Nishang : A framework and collection of scripts and payloads which enables usage of PowerShell for offensive security(All phase)
+https://github.com/samratashok/nishang
+
+2. Sherlock : PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities. 
+https://github.com/rasta-mouse/Sherlock
+
+3. Empire : A PowerShell and Python post-exploitation agent.
+https://github.com/EmpireProject/Empire
