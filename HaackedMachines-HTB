@@ -1,5 +1,17 @@
 1. Optimum
 
+
+Hack :  
+Exploit : 
+exploit/windows/http/rejetto_hfs_exec
+
+Priv escalation : 
+Use local exploit suggester in meterpreter
+Use ms16-032 priv escalation exploit
+
+Note :  If meterpreter is 32 bit you need migrate it in 64 bit process. Eg : to explorer.exe
+
+
 4. Miria
 
 Info : Raspberry Pi (Pi-hole Version v3.1.4 Web Interface Version v3.1 FTL Version v2.10)
