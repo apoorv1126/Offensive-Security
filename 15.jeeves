@@ -40,6 +40,7 @@ Privilege Escalation 1 : (Using host potato exploit or MS16-075)
 
 ## Link1 - MS16-075 : https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-075
 ## Link2 - Hot potato exploit: : https://foxglovesecurity.com/2016/01/16/hot-potato/
+## Link6 - Hot potato : https://pentestlab.blog/2017/04/13/hot-potato/
 
 - I use method of MS16-075 
 - I have used "meterpreter reverse shell" creted by "veil-evasion" uploaded by powershell and reverse handled by "msfconsole -r "
