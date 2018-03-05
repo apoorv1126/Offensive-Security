@@ -1,0 +1,22 @@
+https://guif.re/windowseop
+
+http://www.fuzzysecurity.com/tutorials/16.html
+
+
+
+
+
+
+Windows Exploit Compilation in Linux : 
+
+sudo apt-get install mingw-w64
+
+To create 32 bit executables
+i686-w64-mingw32-gcc -o main32.exe main.c
+
+To create 64 bit executables
+x86_64-w64-mingw32-gcc -o main64.exe main.c
+
+If there is an error of "undefined reference to ............" , just add the option as mentioned below at the end of the command : 
+-lws2_32
+
