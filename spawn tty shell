@@ -29,3 +29,8 @@ Shell Spawning
     (From within nmap)
 
     !sh
+
+    Change or bypass shell
+    
+    $chsh -s /bin/sh root
+    su - root
