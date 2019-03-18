@@ -1,0 +1,4 @@
+https://dl.packetstormsecurity.net/papers/attack/InstallingandAccessingMeterpreter.pdf
+
+Run from meterpreter shell : 
+run metsvc
