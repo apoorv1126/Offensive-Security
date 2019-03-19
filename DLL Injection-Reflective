@@ -1,0 +1,14 @@
+1. Explanation & usage with metasploit post module
+https://www.andreafortuna.org/cybersecurity/what-is-reflective-dll-injection-and-how-can-be-detected/
+
+2. Creation of dll using msfvenom and usage with powershell script
+https://www.youtube.com/watch?v=yKoD5Oy8CKQ
+
+3. Powershell script project to inject dll
+https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-DllInjection.ps1
+
+4. Powershell project where dll has been created and executable to inject that dll
+https://github.com/stephenfewer/ReflectiveDLLInjection
+
+5. More information on reflective dll
+https://blog.cobaltstrike.com/2012/09/17/delivering-custom-payloads-with-metasploit-using-dll-injection/
